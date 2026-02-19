@@ -1,0 +1,43 @@
+body {
+    background-color: #121212;
+    color: #f8f9fa;
+}
+
+.table-dark th, .table-dark td {
+    border-color: #444;
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #1e1e1e;
+}
+
+/* .navbar,  */.alert {
+    border-radius: 0.5rem;
+}
+
+form.bg-secondary {
+    background-color: #1e1e1e !important;
+}
+
+/* Animation de défilement */
+.scrolling-text {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%; /* Commence en dehors du cadre à droite */
+  animation: scroll-left 10s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Optionnel : Arrêter le défilement au survol de la souris */
+.scrolling-text:hover {
+  animation-play-state: paused;
+}
+

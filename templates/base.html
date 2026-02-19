@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des Projets</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link id="dynamic-favicon" rel="icon" type="image/png" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body class="bg-dark text-light d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark shadow-lg sticky-top mb-3"
+      style="background: linear-gradient(90deg, #0d6efd 0%, #0a58ca 100%)"
+    >
+      <div class="container">
+        <!-- Brand avec Icône -->
+        <a class="navbar-brand fw-bolder d-flex align-items-center" href="/">
+          <i class="bi bi-stack me-2 fs-3">Projector</i>
+
+          <!-- <img src="{{ url_for('static', filename='logo/logo_1.png') }}" 
+           alt="Logo GP" 
+           width="40" 
+           height="40" 
+           class="d-inline-block align-text-top me-2"> -->
+          <span
+            style="
+              letter-spacing: 1px;
+              text-transform: uppercase;
+              font-size: 1.1rem;
+            "
+            >Gestion des Projets</span
+          >
+        </a>
+
+        <!-- Bouton Mobile -->
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Liens et Actions -->
+        <!-- <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link active px-3" href="/">
+            <i class="bi bi-house-door me-1"></i> Accueil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="/project/add">
+            <i class="bi bi-plus-circle me-1"></i> Nouveau Projet
+          </a>
+        </li>
+        Séparateur visuel sur desktop
+        <div class="vr mx-3 d-none d-lg-block text-white opacity-25"></div>
+        <li class="nav-item">
+          <span class="nav-link text-white-50 small">
+            <i class="bi bi-person-circle"></i> Admin
+          </span>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link text-white-50 small">
+            <i class="bi bi-person-circle"></i> Developpe par ABDOUL HALIM HAFIZ ADIB
+          </span>
+        </li>
+      </ul>
+    </div> -->
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <!-- Conteneur du défilement -->
+              <div
+                class="nav-link text-white small overflow-hidden"
+                style="width: 450px; position: relative"
+              >
+                <div class="scrolling-text">
+                  <i class="bi bi-person-circle"></i> Developpé par
+                  <span class="fw-bold">ABDOUL HALIM HAFIZ ADIB</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Container principal -->
+    <div class="container flex-grow-1">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer
+      class="bg-primary text-white pt-4 pb-2 mt-5 shadow-lg"
+      style="background: linear-gradient(90deg, #0a58ca 0%, #0d6efd 100%)"
+    >
+      <div class="container text-center text-md-start">
+        <div class="row">
+          <!-- Section Nom du Projet -->
+          <div class="col-md-6 col-lg-6 col-xl-6 mx-auto mb-4">
+            <h6 class="text-uppercase fw-bold">
+              <!-- <i class="bi bi-stack me-2"></i>Gestion de Projets NoSQL -->
+              <i class="bi bi-stack me-2"></i>Projet de bases de données non
+              relationnelles - NoSQL
+            </h6>
+            <hr
+              class="mb-4 mt-0 d-inline-block mx-auto"
+              style="width: 60px; background-color: white; height: 2px"
+            />
+            <p>
+              Une application moderne de gestion de projets utilisant Flask et
+              MongoDB Atlas.
+            </p>
+          </div>
+
+          <!-- Section Contact/Info -->
+          <div
+            class="col-md-6 col-lg-4 col-xl-4 mx-auto mb-md-0 mb-4 text-md-end"
+          >
+            <h6 class="text-uppercase fw-bold">Contact</h6>
+            <hr
+              class="mb-4 mt-0 d-inline-block mx-auto"
+              style="width: 60px; background-color: white; height: 2px"
+            />
+            <p>
+              <i class="bi bi-person-fill me-2"></i> Abdoul Halim Hafiz Adib
+              <br />
+              23GLO003IU
+            </p>
+            <p>
+              <i class="bi bi-phone-fill me-2"></i> 651-916-714 / 690-342-832
+            </p>
+            <p>
+              <i class="bi bi-mortarboard-fill me-2"></i> IUT - GLO III (2026)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        &copy; <span id="year"></span> Copyright :
+        <span class="text-white fst-italic"
+          >Developpé avec <span class="fs-4">&hearts;</span> par Hafiz
+          Adib</span
+        >
+      </div>
+    </footer>
+
+    <script>
+      // Insère l'année en cours automatiquement
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>

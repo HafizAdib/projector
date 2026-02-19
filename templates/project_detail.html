@@ -1,0 +1,296 @@
+{% extends "base.html" %} {% block content %}
+<!-- Page details du projet -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <!-- Affichage du Nom du projet  -->
+  <h2 class="fw-bold">
+    <i class="bi bi-kanban me-2"></i
+    ><span class="text-white-50">Mes Projets</span> / {{ projet.nom }}
+  </h2>
+  <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg"
+    ><i class="bi bi-arrow-left me-1"></i>Retour</a
+  >
+</div>
+<!-- Affichage de la description du projet  -->
+<p class="lead">{{ projet.description }}</p>
+
+<hr class="my-4" />
+
+<!-- Ajout d'une tache au projet -->
+<h4 class="fw-bold mb-3">Ajouter une tâche</h4>
+<div class="card shadow-sm bg-dark border-0 p-3 mb-4">
+  <form
+    method="POST"
+    action="{{ url_for('add_task', project_id=projet._id) }}"
+    class="row g-3"
+  >
+    <div class="col-md-3 form-floating">
+      <input
+        type="text"
+        name="nom"
+        class="form-control"
+        id="taskNom"
+        placeholder="Nom tâche"
+        required
+      />
+      <label for="taskNom">Nom de la tâche</label>
+    </div>
+    <div class="col-md-2 form-floating">
+      <select name="etat" class="form-select" id="taskEtat" required>
+        <option value="À faire">À faire</option>
+        <option value="En cours">En cours</option>
+        <option value="Terminé">Terminé</option>
+      </select>
+      <label for="taskEtat">État</label>
+    </div>
+    <div class="col-md-2 form-floating">
+      <select name="priorite" class="form-select" id="taskPriorite" required>
+        <option value="Haute">Haute</option>
+        <option value="Moyenne">Moyenne</option>
+        <option value="Basse">Basse</option>
+      </select>
+      <label for="taskPriorite">Priorité</label>
+    </div>
+    <div class="col-md-2 form-floating">
+      <input
+        type="date"
+        name="echeance"
+        class="form-control"
+        id="taskEcheance"
+        required
+      />
+      <label for="taskEcheance">Échéance</label>
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+      <button class="btn btn-success h-100 w-100">
+        <i class="bi bi-plus-circle me-1"></i>Ajouter
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Liste des taches du projet -->
+<h4 class="fw-bold mb-3">Tâches</h4>
+<div class="card shadow-sm bg-dark border-0">
+  <div class="card-body p-0 table-responsive">
+    <table class="table table-dark table-striped table-hover mb-0">
+      <thead class="table-light text-dark">
+        <tr>
+          <th>Tâche</th>
+          <th>État</th>
+          <th>Priorité</th>
+          <th>Échéance</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in projet.taches %}
+        <tr>
+          <td>{{ t.nom }}</td>
+          <td>{{ t.etat }}</td>
+          <td class="fw-bold text-center">
+            {% if t.priorite == "Haute" %}
+            <span class="text-danger"
+              ><i class="bi bi-arrow-up-circle-fill me-1"></i>Haute</span
+            >
+            {% elif t.priorite == "Moyenne" %}
+            <span class="text-warning"
+              ><i class="bi bi-arrow-right-circle-fill me-1"></i>Moyenne</span
+            >
+            {% else %}
+            <span class="text-success"
+              ><i class="bi bi-arrow-down-circle-fill me-1"></i>Basse</span
+            >
+            {% endif %}
+          </td>
+
+          <td>{{ t.echeance }}</td>
+          <td class="text-center">
+            <!-- Modifier une tache via un modal -->
+            <button
+              class="btn btn-warning btn-sm me-1"
+              data-bs-toggle="modal"
+              data-bs-target="#editTaskModal{{ loop.index0 }}"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+            <a
+              href="{{ url_for('delete_task', project_id=projet._id, task_index=loop.index0) }}"
+              class="btn btn-danger btn-sm"
+            >
+              <i class="bi bi-trash"></i>
+            </a>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="editTaskModal{{ loop.index0 }}"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Modifier la tâche</h5>
+                    <button
+                      type="button"
+                      class="btn-close btn-close-white"
+                      data-bs-dismiss="modal"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form
+                      method="POST"
+                      action="{{ url_for('update_task', project_id=projet._id, task_index=loop.index0) }}"
+                    >
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          name="nom"
+                          class="form-control"
+                          id="editNom{{ loop.index0 }}"
+                          value="{{ t.nom }}"
+                          required
+                        />
+                        <label for="editNom{{ loop.index0 }}"
+                          >Nom de la tâche</label
+                        >
+                      </div>
+                      <div class="form-floating mb-3">
+                        <select
+                          name="etat"
+                          class="form-select"
+                          id="editEtat{{ loop.index0 }}"
+                          required
+                        >
+                          <option
+                            value="À faire"
+                            {%
+                            if
+                            t.etat=""
+                            ="À faire"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            À faire
+                          </option>
+                          <option
+                            value="En cours"
+                            {%
+                            if
+                            t.etat=""
+                            ="En cours"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            En cours
+                          </option>
+                          <option
+                            value="Terminé"
+                            {%
+                            if
+                            t.etat=""
+                            ="Terminé"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            Terminé
+                          </option>
+                        </select>
+                        <label for="editEtat{{ loop.index0 }}">État</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <select
+                          name="priorite"
+                          class="form-select"
+                          id="editPriorite{{ loop.index0 }}"
+                          required
+                        >
+                          <option
+                            value="Haute"
+                            {%
+                            if
+                            t.priorite=""
+                            ="Haute"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            Haute
+                          </option>
+                          <option
+                            value="Moyenne"
+                            {%
+                            if
+                            t.priorite=""
+                            ="Moyenne"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            Moyenne
+                          </option>
+                          <option
+                            value="Basse"
+                            {%
+                            if
+                            t.priorite=""
+                            ="Basse"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            Basse
+                          </option>
+                        </select>
+                        <label for="editPriorite{{ loop.index0 }}"
+                          >Priorité</label
+                        >
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input
+                          type="date"
+                          name="echeance"
+                          class="form-control"
+                          id="editEcheance{{ loop.index0 }}"
+                          value="{{ t.echeance }}"
+                          required
+                        />
+                        <label for="editEcheance{{ loop.index0 }}"
+                          >Échéance</label
+                        >
+                      </div>
+                      <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-warning">
+                          <i class="bi bi-pencil-square me-1"></i>Modifier
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          <i class="bi bi-x-circle me-1"></i>Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-white-50 py-3">
+            Aucune tâche ajoutée pour ce projet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
