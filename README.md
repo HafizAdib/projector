@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📂 Projector : Application Web de Gestion de Projets (NoSQL)
 
 ### 🎓 Projet d'École - Développement NoSQL
@@ -41,3 +42,6 @@ Avoir Python installé sur votre machine.
 Ouvrez votre terminal et exécutez la commande suivante :
 ```bash
 pip install Flask Flask-PyMongo dnspython gunicorn
+=======
+# projector
+>>>>>>> de513e6e16e5a94f42644e56a35a767d3d02566b
